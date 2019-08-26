@@ -15,20 +15,23 @@
 /* jshint esversion: 6 */
 
 const https = require('https');
+const fs = require('fs');
 
-// Rescue time API key
-const API_KEY = 'YOUR_API_KEY_HERE';
+// Rescue time API key. Need to manually create an api.key file
+const path = `${process.env.HOME}/Library/RescueTime.com/api.key`;
+const API_KEY = fs.readFileSync(path, 'utf8').trim();
 
-const ENDPOINT_PULSE = 'https://www.rescuetime.com/anapi/current_productivity_pulse.json';
+// const ENDPOINT_PULSE = 'https://www.rescuetime.com/anapi/current_productivity_pulse.json';
 const ENDPOINT_FEED = 'https://www.rescuetime.com/anapi/daily_summary_feed.json';
 const ENDPOINT_ACTIVITIES = 'https://www.rescuetime.com/anapi/data.json';
 
 const URL_DASH_DAY = 'https://www.rescuetime.com/dashboard/for/the/day/of/';
 
-const endpoint_pulse = `${ENDPOINT_PULSE}?key=${API_KEY}`;
+// const endpoint_pulse = `${ENDPOINT_PULSE}?key=${API_KEY}`;
 const endpoint_week = `${ENDPOINT_FEED}?key=${API_KEY}`;
 const endpoint_today = `${ENDPOINT_ACTIVITIES}?key=${API_KEY}&perspective=interval&restrict_kind=productivity`;
 
+console.log(endpoint_today)
 
 function request(endpoint) {
   return new Promise((resolve, reject) => {
