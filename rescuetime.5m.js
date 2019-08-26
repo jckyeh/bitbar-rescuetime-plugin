@@ -17,21 +17,19 @@
 const https = require('https');
 const fs = require('fs');
 
-// Rescue time API key. Need to manually create an api.key file
-const path = `${process.env.HOME}/Library/RescueTime.com/api.key`;
-const API_KEY = fs.readFileSync(path, 'utf8').trim();
 
-// const ENDPOINT_PULSE = 'https://www.rescuetime.com/anapi/current_productivity_pulse.json';
+// Rescue time API key. Need to manually create an api.key file
+const PATH = `${process.env.HOME}/Library/RescueTime.com/api.key`;
+const API_KEY = fs.readFileSync(PATH, 'utf8').trim();
+
 const ENDPOINT_FEED = 'https://www.rescuetime.com/anapi/daily_summary_feed.json';
 const ENDPOINT_ACTIVITIES = 'https://www.rescuetime.com/anapi/data.json';
 
 const URL_DASH_DAY = 'https://www.rescuetime.com/dashboard/for/the/day/of/';
 
-// const endpoint_pulse = `${ENDPOINT_PULSE}?key=${API_KEY}`;
-const endpoint_week = `${ENDPOINT_FEED}?key=${API_KEY}`;
-const endpoint_today = `${ENDPOINT_ACTIVITIES}?key=${API_KEY}&perspective=interval&restrict_kind=productivity`;
+let endpoint_week = `${ENDPOINT_FEED}?key=${API_KEY}`;
+let endpoint_today = `${ENDPOINT_ACTIVITIES}?key=${API_KEY}&perspective=interval&restrict_kind=productivity`;
 
-console.log(endpoint_today)
 
 function request(endpoint) {
   return new Promise((resolve, reject) => {
@@ -83,50 +81,33 @@ request(endpoint_today).then((json) => {
   const today_hours = sumHoursinRows(json.rows);
 
   const vpRows = filterRowsByProductivity(json.rows, 2);
-  const vp_hours = sumHoursinRows(vpRows);
+  const vpHours = sumHoursinRows(vpRows);
 
   const pRows = filterRowsByProductivity(json.rows, 1);
-  const p_hours = sumHoursinRows(pRows);
+  const pHours = sumHoursinRows(pRows);
 
   const nRows = filterRowsByProductivity(json.rows, 0);
-  const n_hours = sumHoursinRows(nRows);
+  const nHours = sumHoursinRows(nRows);
   
   const dRows = filterRowsByProductivity(json.rows, -1);
-  const d_hours = sumHoursinRows(dRows);
+  const dHours = sumHoursinRows(dRows);
   
   const vdRows = filterRowsByProductivity(json.rows, -2);
-  const vd_hours = sumHoursinRows(vdRows);
+  const vdHours = sumHoursinRows(vdRows);
 
-  // console.log(vd_hours);
   let score = 0;
-
   if (today_hours !== 0) {
-    score = Math.floor((1*vp_hours + .75*p_hours + .5*n_hours + .25*d_hours + 0*vd_hours)/today_hours*100);
+    score = Math.floor((1*vpHours + .75*pHours + .5*nHours + .25*dHours + 0*vdHours)/today_hours*100);
   }
 
-  console.log(`🎯${score}  (${hoursToString(vp_hours)} of ${hoursToString(today_hours)}) | color=black`);
+  console.log(`🎯${score}  (${hoursToString(vpHours)} of ${hoursToString(today_hours)}) | color=black`);
   console.log(`---`);
-
   console.log(`✅ Today: ${score} | href=https://www.rescuetime.com/dashboard color=black`);
-  console.log(`${hoursToString(vp_hours)} of ${hoursToString(today_hours)} (${Math.round(vp_hours/today_hours*100)}%)`)
+  console.log(`${hoursToString(vpHours)} of ${hoursToString(today_hours)} (${Math.round(vpHours/today_hours*100)}%)`)
   console.log(`---`);
-
 }).catch((error) => {
   console.log(error);
 })
-
-// // Get current productivity pulse
-// request(endpoint_pulse).then((json) => {
-//   if (json.pulse !== null) {
-//     console.log(`🎯${json.pulse} | color=${json.color}`);
-//     console.log(`---`);
-//   } else {
-//     console.log(`🎯-`);
-//     console.log(`---`);
-//   }
-// }).catch((error) => {
-//   console.log(error);
-// })
 
 // Get this week's productivity data
 request(endpoint_week).then((json) => {
@@ -134,7 +115,6 @@ request(endpoint_week).then((json) => {
   const days = ['Sunday','Monday','Tuesday','Wednesday','Thursday','Friday','Saturday'];
 
   const yesterdayIndex = getDayofWeekIndex(json[0].date);
-  // console.log(`Yesterday index is ${yesterdayIndex}`);
 
   // If yesterday was a Sunday (i.e. today is Monday), there is no history to retrieve
   if (yesterdayIndex !== 6) {    
@@ -146,7 +126,6 @@ request(endpoint_week).then((json) => {
       console.log(`---`)
     })
   }
-
 }).catch((error) => {
   console.log(error)
 })
