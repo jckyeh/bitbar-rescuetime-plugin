@@ -17,7 +17,7 @@
 const https = require('https');
 
 // Rescue time API key
-const API_KEY = 'B631rw6Y63iGoKAyWIyeDvLqmZXO2I2uj5I2fQpK';
+const API_KEY = 'YOUR_API_KEY_HERE';
 
 const ENDPOINT_PULSE = 'https://www.rescuetime.com/anapi/current_productivity_pulse.json';
 const ENDPOINT_FEED = 'https://www.rescuetime.com/anapi/daily_summary_feed.json';
