@@ -50,9 +50,13 @@ function request(endpoint) {
   });
 }
 
-function getDayofWeekIndex(date) {
+function getDayOfWeekIndex(date) {
   const dateObj = new Date(date);
   return dateObj.getDay();
+}
+
+function getColorFromScore(score) {
+  return (score >= 69 ? 'black' : 'red');
 }
 
 function hoursToString(hoursDecimal) {
@@ -100,7 +104,7 @@ request(endpoint_today).then((json) => {
     score = Math.floor((1*vpHours + .75*pHours + .5*nHours + .25*dHours + 0*vdHours)/today_hours*100);
   }
 
-  console.log(`🎯${score}  (${hoursToString(vpHours)} of ${hoursToString(today_hours)}) | color=black`);
+  console.log(`🎯${score}  (${hoursToString(vpHours)} of ${hoursToString(today_hours)}) | color=${getColorFromScore(score)}`);
   console.log(`---`);
   console.log(`✅ Today: ${score} | href=https://www.rescuetime.com/dashboard color=black`);
   console.log(`${hoursToString(vpHours)} of ${hoursToString(today_hours)} (${Math.round(vpHours/today_hours*100)}%)`)
@@ -114,14 +118,14 @@ request(endpoint_week).then((json) => {
   // Determine day of week for first entry of array
   const days = ['Sunday','Monday','Tuesday','Wednesday','Thursday','Friday','Saturday'];
 
-  const yesterdayIndex = getDayofWeekIndex(json[0].date);
+  const yesterdayIndex = getDayOfWeekIndex(json[0].date);
 
   // If yesterday was a Sunday (i.e. today is Monday), there is no history to retrieve
   if (yesterdayIndex !== 6) {    
     const data_thisWeek = json.slice(0, yesterdayIndex + 1); // Slice works differently in node vs. with BitBar. In BitBar, slice removes end index.
 
     data_thisWeek.forEach((data_day) => {
-      console.log(`❌ ${days[getDayofWeekIndex(data_day.date) + 1]}: ${data_day.productivity_pulse} | href=${URL_DASH_DAY}${data_day.date} color=black`)
+      console.log(`❌ ${days[getDayOfWeekIndex(data_day.date) + 1]}: ${data_day.productivity_pulse} | href=${URL_DASH_DAY}${data_day.date} color=black`)
       console.log(`${hoursToString(data_day.very_productive_hours)} of ${hoursToString(data_day.total_hours)} (${data_day.very_productive_percentage}%)`)
       console.log(`---`)
     })
