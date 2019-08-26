@@ -120,7 +120,7 @@ request(endpoint_today).then((json) => {
 // Get this week's productivity data
 request(endpoint_week).then((json) => {
   // Determine day of week for first entry of array
-  const days = ['', 'Sunday','Monday','Tuesday','Wednesday','Thursday','Friday','Saturday'];
+  const days = ['Sunday','Monday','Tuesday','Wednesday','Thursday','Friday','Saturday'];
 
   const yesterdayIndex = getDayOfWeekIndex(json[0].date);
 
