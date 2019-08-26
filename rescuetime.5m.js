@@ -50,9 +50,10 @@ function request(endpoint) {
   });
 }
 
-function getDayOfWeekIndex(date) {
+function getDayOfWeek(date) {
   const dateObj = new Date(date);
-  return dateObj.getDay();
+  const days = ['Monday','Tuesday','Wednesday','Thursday','Friday','Saturday', 'Sunday'];
+  return days[dateObj.getDay()];
 }
 
 function getColorFromScore(score) {
@@ -120,20 +121,14 @@ request(endpoint_today).then((json) => {
 // Get this week's productivity data
 request(endpoint_week).then((json) => {
   // Determine day of week for first entry of array
-  const days = ['Sunday','Monday','Tuesday','Wednesday','Thursday','Friday','Saturday'];
+  const days = ['Monday','Tuesday','Wednesday','Thursday','Friday','Saturday', 'Sunday'];
+  const data_thisWeek = json.slice(0, 6); // Slice works differently in node vs. with BitBar. In BitBar, slice removes end index.
 
-  const yesterdayIndex = getDayOfWeekIndex(json[0].date);
-
-  // If yesterday was a Sunday (i.e. today is Monday), there is no history to retrieve
-  if (yesterdayIndex !== 6) {    
-    const data_thisWeek = json.slice(0, yesterdayIndex + 1); // Slice works differently in node vs. with BitBar. In BitBar, slice removes end index.
-
-    data_thisWeek.forEach((data_day) => {
-      console.log(`${getTickOrCross(data_day.productivity_pulse)} ${days[getDayOfWeekIndex(data_day.date) + 1]}: ${data_day.productivity_pulse} | href=${URL_DASH_DAY}${data_day.date} color=black`)
-      console.log(`${hoursToString(data_day.very_productive_hours)} of ${hoursToString(data_day.total_hours)} (${data_day.very_productive_percentage}%)`)
-      console.log(`---`)
-    })
-  }
+  data_thisWeek.forEach((data_day) => {
+    console.log(`${getTickOrCross(data_day.productivity_pulse)} ${getDayOfWeek(data_day.date)}: ${data_day.productivity_pulse} | href=${URL_DASH_DAY}${data_day.date} color=black`)
+    console.log(`${hoursToString(data_day.very_productive_hours)} of ${hoursToString(data_day.total_hours)} (${data_day.very_productive_percentage}%)`)
+    console.log(`---`)
+  })
 }).catch((error) => {
   console.log(error)
 })
