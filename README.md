@@ -1,6 +1,8 @@
 # bitbar-rescuetime-plugin
 Display your RescueTime productivity pulse (and more!) on your Mac menu bar. Based on [BitBar](https://github.com/matryer/bitbar).
 
+![RescueTime Plugin Screenshot](https://raw.githubusercontent.com/jckyeh/bitbar-rescuetime-plugin/assets/rescuetimePlugin-dropdown.png)
+
 This plugin displays your “productivity score,” and how much time is “very productive” of total hours logged. The drop down menu shows you your “productivity score” and percentage of your time that was “very productive” over the past seven days. If your score is above 70, you get a check mark for that day (67% is the average)!
 
 Read more about the background of this project nad how it is impacting my productivity [here](https://jackyeh.me/project/rescuetime-mac-menu-bar-app/).
