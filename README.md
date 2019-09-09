@@ -9,4 +9,7 @@ Read more about the background of this project nad how it is impacting my produc
 1. Download the latest version of [BitBar](https://github.com/matryer/bitbar/releases). 
 2. Copy it to your Applications folder and run it. 
 3. Follow the prompts to create and select a plugins folder.
-4. Download this plugin and move to your plugins directory and hit `Refresh` from one of the BitBar menus.
+4. Download this plugin and move to your plugins directory.
+5. Create a new API key from your RescueTime account [here](https://www.rescuetime.com/anapi/manage).
+6. Store the key in `~/Library/RescueTime.com/api.key`.
+7. Hit `Refresh` from one of the BitBar menus.
