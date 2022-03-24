@@ -38,7 +38,7 @@ function request(endpoint) {
       res.on('data', (data) => body.push(data));
       res.on('end', () => {
         try {
-          resolve(JSON.parse(body.join()));
+          resolve(JSON.parse(body.join('')));
         } catch(error) {
           reject(error);
         }
