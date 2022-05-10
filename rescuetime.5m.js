@@ -1,11 +1,11 @@
 #!/usr/bin/env /usr/local/bin/node
 
-// <bitbar.title>People In Space</bitbar.title>
+// <bitbar.title>RescueTime Productivity Stats</bitbar.title>
 // <bitbar.version>v1.1</bitbar.version>
 // <bitbar.author>Mullwar</bitbar.author>
 // <bitbar.author.github>mullwar</bitbar.author.github>
-// <bitbar.desc>How many people are in Space right now?</bitbar.desc>
-// <bitbar.image>http://i.imgur.com/i9biB3R.png</bitbar.image>
+// <bitbar.desc>Show RescueTime Productivity in menubar</bitbar.desc>
+// <bitbar.image>https://i.imgur.com/7ShrdlB.png</bitbar.image>
 // <bitbar.dependencies>node</bitbar.dependencies>
 // <bitbar.abouturl>https://github.com/mullwar/bitbar-plugins</bitbar.abouturl>
 
@@ -16,7 +16,6 @@
 
 const https = require('https');
 const fs = require('fs');
-
 
 // Rescue time API key. Need to manually create an api.key file
 const PATH = `${process.env.HOME}/Library/RescueTime.com/api.key`;
@@ -57,7 +56,7 @@ function getDayOfWeek(date) {
 }
 
 function getColorFromScore(score) {
-  return (score >= 69 ? 'black' : 'red');
+  return (score >= 69 ? 'lightgreen' : 'red');
 }
 
 function getTickOrCross(score) {
@@ -109,7 +108,8 @@ request(endpoint_today).then((json) => {
     score = Math.floor((1*vpHours + .75*pHours + .5*nHours + .25*dHours + 0*vdHours)/today_hours*100);
   }
 
-  console.log(`🎯${score}  (${hoursToString(vpHours)} of ${hoursToString(today_hours)}) | color=${getColorFromScore(score)}`);
+  //console.log(`🎯${score}  (${hoursToString(vpHours)} of ${hoursToString(today_hours)}) | color=${getColorFromScore(score)}`);
+  console.log(`${score}%  | color=${getColorFromScore(score)}`);
   console.log(`---`);
   console.log(`${getTickOrCross(score)} Today: ${score} | href=https://www.rescuetime.com/dashboard color=black`);
   console.log(`${hoursToString(vpHours)} of ${hoursToString(today_hours)} (${Math.round(vpHours/today_hours*100)}%)`)
