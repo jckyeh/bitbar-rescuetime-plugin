@@ -27,7 +27,8 @@ const ENDPOINT_ACTIVITIES = 'https://www.rescuetime.com/anapi/data.json';
 const URL_DASH_DAY = 'https://www.rescuetime.com/dashboard/for/the/day/of/';
 
 let endpoint_week = `${ENDPOINT_FEED}?key=${API_KEY}`;
-let endpoint_today = `${ENDPOINT_ACTIVITIES}?key=${API_KEY}&perspective=interval&restrict_kind=productivity`;
+// Note &restrict_schedule_id=6839529, it restricts to 'work' schedule: https://www.rescuetime.com/dashboard?schedule_id=6839529
+let endpoint_today = `${ENDPOINT_ACTIVITIES}?key=${API_KEY}&perspective=interval&restrict_kind=productivity&restrict_schedule_id=6839529`;
 
 
 function request(endpoint) {
@@ -51,7 +52,7 @@ function request(endpoint) {
 
 function getDayOfWeek(date) {
   const dateObj = new Date(date);
-  const days = ['Monday','Tuesday','Wednesday','Thursday','Friday','Saturday', 'Sunday'];
+  const days = ['Monday', 'Tuesday', 'Wednesday', 'Thursday', 'Friday', 'Saturday', 'Sunday'];
   return days[dateObj.getDay()];
 }
 
@@ -60,7 +61,7 @@ function getColorFromScore(score) {
 }
 
 function getTickOrCross(score) {
-  return (score >= 69 ? '✅' : '❌');
+  return (score >= 3 ? '✅' : '❌');
 }
 
 function hoursToString(hoursDecimal) {
@@ -121,14 +122,15 @@ request(endpoint_today).then((json) => {
 // Get this week's productivity data
 request(endpoint_week).then((json) => {
   // Determine day of week for first entry of array
-  const days = ['Monday','Tuesday','Wednesday','Thursday','Friday','Saturday', 'Sunday'];
+  const days = ['Monday', 'Tuesday', 'Wednesday', 'Thursday', 'Friday', 'Saturday', 'Sunday'];
   const data_thisWeek = json.slice(0, 6); // Slice works differently in node vs. with BitBar. In BitBar, slice removes end index.
 
   data_thisWeek.forEach((data_day) => {
-    console.log(`${getTickOrCross(data_day.productivity_pulse)} ${getDayOfWeek(data_day.date)}: ${data_day.productivity_pulse} | href=${URL_DASH_DAY}${data_day.date} color=black`)
+    console.log(`${getTickOrCross(data_day.very_productive_hours)} ${getDayOfWeek(data_day.date)}: ${data_day.productivity_pulse} | href=${URL_DASH_DAY}${data_day.date} color=black`)
     console.log(`${hoursToString(data_day.very_productive_hours)} of ${hoursToString(data_day.total_hours)} (${data_day.very_productive_percentage}%)`)
     console.log(`---`)
   })
 }).catch((error) => {
   console.log(error)
 })
+
