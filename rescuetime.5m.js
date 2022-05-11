@@ -112,7 +112,7 @@ request(endpoint_today).then((json) => {
   //console.log(`🎯${score}  (${hoursToString(vpHours)} of ${hoursToString(today_hours)}) | color=${getColorFromScore(score)}`);
   console.log(`${score}%  | color=${getColorFromScore(score)}`);
   console.log(`---`);
-  console.log(`${getTickOrCross(score)} Today: ${score}% | href=https://www.rescuetime.com/dashboard color=black`);
+  console.log(`${getTickOrCross(vpHours)} Today: ${score}% | href=https://www.rescuetime.com/dashboard color=black`);
   console.log(`${hoursToString(vpHours)} of ${hoursToString(today_hours)} (${Math.round(vpHours/today_hours*100)}%)`)
   console.log(`---`);
 }).catch((error) => {
@@ -133,4 +133,3 @@ request(endpoint_week).then((json) => {
 }).catch((error) => {
   console.log(error)
 })
-
