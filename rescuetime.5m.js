@@ -112,7 +112,7 @@ request(endpoint_today).then((json) => {
   //console.log(`🎯${score}  (${hoursToString(vpHours)} of ${hoursToString(today_hours)}) | color=${getColorFromScore(score)}`);
   console.log(`${score}%  | color=${getColorFromScore(score)}`);
   console.log(`---`);
-  console.log(`${getTickOrCross(score)} Today: ${score} | href=https://www.rescuetime.com/dashboard color=black`);
+  console.log(`${getTickOrCross(score)} Today: ${score}% | href=https://www.rescuetime.com/dashboard color=black`);
   console.log(`${hoursToString(vpHours)} of ${hoursToString(today_hours)} (${Math.round(vpHours/today_hours*100)}%)`)
   console.log(`---`);
 }).catch((error) => {
@@ -126,7 +126,7 @@ request(endpoint_week).then((json) => {
   const data_thisWeek = json.slice(0, 6); // Slice works differently in node vs. with BitBar. In BitBar, slice removes end index.
 
   data_thisWeek.forEach((data_day) => {
-    console.log(`${getTickOrCross(data_day.very_productive_hours)} ${getDayOfWeek(data_day.date)}: ${data_day.productivity_pulse} | href=${URL_DASH_DAY}${data_day.date} color=black`)
+    console.log(`${getTickOrCross(data_day.very_productive_hours)} ${getDayOfWeek(data_day.date)}: ${data_day.productivity_pulse}% | href=${URL_DASH_DAY}${data_day.date} color=black`)
     console.log(`${hoursToString(data_day.very_productive_hours)} of ${hoursToString(data_day.total_hours)} (${data_day.very_productive_percentage}%)`)
     console.log(`---`)
   })
